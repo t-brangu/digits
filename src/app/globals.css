@@ -41,3 +41,14 @@ body .navbar {
   padding-left: 4rem;
   padding-right: 4rem;
 }
+
+#admin {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+@media (max-width: 768px) {
+  #admin {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
