@@ -36,3 +36,8 @@ body .navbar {
 .bg-dark a.dropdown-item {
   color: var(--nat-navbar-bg);
 }
+
+#list {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
