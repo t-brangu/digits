@@ -15,6 +15,7 @@ export const EditStuffSchema = Yup.object({
   owner: Yup.string().required(),
 });
 
+/** Contact interface used across Add/Edit forms */
 export interface Contact {
   firstName: string;
   lastName: string;
@@ -22,3 +23,24 @@ export interface Contact {
   image: string;
   description: string;
 }
+
+/** Validation schema for adding a contact */
+export const AddContactSchema = Yup.object({
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  address: Yup.string().required('Address is required'),
+  image: Yup.string().url('Must be a valid URL').required('Image URL is required'),
+  description: Yup.string().required('Description is required'),
+  owner: Yup.string().required('Owner is required'),
+});
+
+/** Validation schema for editing a contact */
+export const EditContactSchema = Yup.object({
+  id: Yup.number().required(),
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  address: Yup.string().required('Address is required'),
+  image: Yup.string().url('Must be a valid URL').required('Image URL is required'),
+  description: Yup.string().required('Description is required'),
+  owner: Yup.string().required('Owner is required'),
+});
