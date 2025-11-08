@@ -1,8 +1,10 @@
-// src/lib/dbActions.ts
-
 'use server';
 
-import type { Stuff, Condition as PrismaCondition, Contact as PrismaContact } from '@prisma/client';
+import type {
+  Stuff,
+  Condition as PrismaCondition,
+  Contact as PrismaContact,
+} from '@prisma/client';
 import { hash } from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { prisma } from './prisma';
@@ -77,5 +79,26 @@ export async function editContact(contact: PrismaContact) {
       owner: contact.owner,
     },
   });
+  redirect('/list');
+}
+
+/** ------------------------ Notes ------------------------ */
+
+export async function addNote(payload: { note: string; contactId: number; owner: string }) {
+  // guardrails to avoid empty notes and ensure numeric contactId
+  const text = (payload.note || '').trim();
+  if (!text) {
+    redirect('/list'); // or simply return; but redirect keeps UX consistent with your other actions
+  }
+
+  await prisma.note.create({
+    data: {
+      note: text,
+      contactId: Number(payload.contactId),
+      owner: payload.owner,
+      // createdAt is set automatically by Prisma default(now())
+    },
+  });
+
   redirect('/list');
 }

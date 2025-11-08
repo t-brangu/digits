@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, Col, Image } from 'react-bootstrap';
+import { Card, Col, Image, ListGroup } from 'react-bootstrap';
+import AddNoteForm from '@/components/AddNoteForm';
+import NoteItem from '@/components/NoteItem';
 
-// Include id so we can build /edit/<id> links
+type NoteShape = { id: number; note: string; createdAt: Date | string };
+
 type ContactCardProps = {
   contact: {
     id: number;
@@ -13,11 +16,13 @@ type ContactCardProps = {
     image: string;
     description: string;
   };
+  notes: NoteShape[];
 };
 
-const ContactCard = ({ contact }: ContactCardProps) => (
+const ContactCard = ({ contact, notes }: ContactCardProps) => (
   <Col>
     <Card className="h-100">
+      {/* HEADER */}
       <Card.Header className="d-flex align-items-center gap-3">
         <Image
           src={contact.image}
@@ -29,19 +34,26 @@ const ContactCard = ({ contact }: ContactCardProps) => (
         <div>
           <Card.Title className="mb-0">
             {contact.firstName}
+            {' '}
             {contact.lastName}
           </Card.Title>
-          <Card.Subtitle className="text-muted">
-            {contact.address}
-          </Card.Subtitle>
+          <Card.Subtitle className="text-muted">{contact.address}</Card.Subtitle>
         </div>
       </Card.Header>
 
       <Card.Body>
         <Card.Text>{contact.description}</Card.Text>
+
+        <ListGroup variant="flush" className="mt-3 mb-3">
+          {notes.map((n) => (
+            <NoteItem key={n.id} note={n} />
+          ))}
+        </ListGroup>
+
+        <AddNoteForm contactId={contact.id} />
+
       </Card.Body>
 
-      {/* NEW: footer with Edit link */}
       <Card.Footer>
         <Link href={`/edit/${contact.id}`}>Edit</Link>
       </Card.Footer>

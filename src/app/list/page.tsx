@@ -4,17 +4,25 @@ import authOptions from '@/lib/authOptions';
 import { loggedInProtectedPage } from '@/lib/page-protection';
 import { prisma } from '@/lib/prisma';
 import ContactCard from '@/components/ContactCard';
-import type { Contact as PrismaContact } from '@prisma/client';
+import type { Contact as PrismaContact, Note as PrismaNote } from '@prisma/client';
 
 const ListPage = async () => {
   const session = await getServerSession(authOptions);
   loggedInProtectedPage(session as any);
 
-  const owner = session?.user?.email || '';
-  const contacts: PrismaContact[] = await prisma.contact.findMany({
-    where: { owner },
-    orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-  });
+  const owner = (session?.user?.email as string) || '';
+
+  // Fetch contacts and notes for this owner
+  const [contacts, notes]: [PrismaContact[], PrismaNote[]] = await Promise.all([
+    prisma.contact.findMany({
+      where: { owner },
+      orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+    }),
+    prisma.note.findMany({
+      where: { owner },
+      orderBy: { createdAt: 'asc' }, // or 'desc' if you prefer newest first
+    }),
+  ]);
 
   return (
     <main>
@@ -31,6 +39,7 @@ const ListPage = async () => {
                 image: c.image,
                 description: c.description,
               }}
+              notes={notes.filter((n) => n.contactId === c.id)}
             />
           ))}
         </Row>
