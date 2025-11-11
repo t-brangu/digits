@@ -173,7 +173,7 @@ Regular users cannot access this page.
 
 ## Summary
 
-Digits provides a simple but complete example of a full-stack web application where users can:
+Digits provides a simple example of a full-stack web application where users can:
 
 - Register and log in  
 - Manage contacts  
