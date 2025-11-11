@@ -17,32 +17,45 @@ Install PostgreSQL from https://www.postgresql.org/download/.
 
 Create your database:
 
+\```bash
 createdb digits
+\```
 
 ### 2. Download your Digits repository
 Clone your copy of the project:
 
+\```bash
 git clone https://github.com/<your-username>/<your-digits-repo>.git
 cd <your-digits-repo>
+\```
 
 ### 3. Install libraries
+
+\```bash
 npm install
+\```
 
 ### 4. Create your environment file  
 Copy `.env.sample` into `.env` and fill in the required values:
 
+\```bash
 DATABASE_URL="postgresql://localhost:5432/digits"
+\```
 
 Add your NEXTAUTH secrets as well.
 
 ### 5. Set up your database
 Run the Prisma migration:
 
+\```bash
 npx prisma migrate dev
+\```
 
 Then seed the database with default users and contacts:
 
+\```bash
 npx prisma db seed
+\```
 
 You should see output showing users and contacts being created.
 
@@ -52,7 +65,9 @@ You should see output showing users and contacts being created.
 
 Start the system with:
 
+\```bash
 npm run dev
+\```
 
 If everything works, the application will be running at:
 
@@ -66,7 +81,9 @@ You can log in using the users defined in `config/settings.development.json`, or
 
 You can run ESLint to check for style problems:
 
+\```bash
 npm run lint
+\```
 
 ---
 
@@ -106,9 +123,9 @@ Once logged in, the navbar will update to show options for listing contacts and 
 
 After logging in, you return to a landing-style page, but the navbar now includes authenticated options:
 
-- List Contacts
-- Add Contact
-- Sign Out
+- List Contacts  
+- Add Contact  
+- Sign Out  
 
 This lets you start managing your contacts.
 
