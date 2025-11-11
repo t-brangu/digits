@@ -1,203 +1,166 @@
 ![](doc/landing.png)
 
-This Digits application is a Next.js 14 project that manages **Contacts** and **timestamped Notes**. It’s basically a small personal contact manager where you can store people’s information and write notes about conversations you’ve had with them.
+Digits is an application that allows users to:
 
-This app uses:
-- Next.js (App Router)
-- React Bootstrap for the UI
-- React Hook Form for forms
-- NextAuth for logging in and signing up
-- Prisma + PostgreSQL for the database
-- SweetAlert for pop-up messages
-- ESLint for code style checks
+- Register an account  
+- Create and manage a set of contacts  
+- Add timestamped notes about interactions with each contact  
 
-The goal of this project is to help learn how full-stack web apps work.
+This version of Digits is built with **Next.js 14**, **Prisma**, **NextAuth**, and **React Bootstrap**. The main goal is to provide a simple example of a full-stack web application where users can log in and keep track of people they know and any notes they want to record.
 
 ---
 
 ## Installation
 
 ### 1. Install PostgreSQL
-Download it from https://www.postgresql.org/download/ and create a database:
+Install PostgreSQL from https://www.postgresql.org/download/.
+
+Create your database:
 
 createdb digits
 
-### 2. Clone your GitHub repo
+### 2. Download your Digits repository
+Clone your copy of the project:
 
 git clone https://github.com/<your-username>/<your-digits-repo>.git
 cd <your-digits-repo>
 
-### 3. Install dependencies
-
+### 3. Install libraries
 npm install
 
-### 4. Set up your `.env`
-Copy `.env.sample` → `.env` and update:
+### 4. Create your environment file  
+Copy `.env.sample` into `.env` and fill in the required values:
 
 DATABASE_URL="postgresql://localhost:5432/digits"
 
-Also fill in the NEXTAUTH secrets.
+Add your NEXTAUTH secrets as well.
 
-### 5. Run Prisma migrations
+### 5. Set up your database
+Run the Prisma migration:
 
 npx prisma migrate dev
 
-### 6. Seed the database
+Then seed the database with default users and contacts:
 
 npx prisma db seed
 
-This sets up default users and contacts from `config/settings.development.json`.
+You should see output showing users and contacts being created.
 
 ---
 
-## Running the system
+## Running the application
 
-Start the app with:
+Start the system with:
 
 npm run dev
 
-Then open:
+If everything works, the application will be running at:
 
 http://localhost:3000
 
-You can log in using a seeded account or sign up and create your own.
+You can log in using the users defined in `config/settings.development.json`, or you can register a new account.
 
 ---
 
 ## ESLint
 
-To check your code style:
+You can run ESLint to check for style problems:
 
 npm run lint
 
 ---
 
-## Walkthrough
+# User Interface Walkthrough
 
-### Directory structure (simple explanation)
+## Landing Page
 
-config/ — settings for seeding users/contacts
-doc/ — screenshots
-prisma/ — database schema + seed script
-public/ — images
-src/ — the actual app code
-tests/ — (optional) Playwright tests
-
-Inside `src/`:
-
-app/
-auth/ — login / logout / register pages
-contacts/ — add, list, edit contacts
-notes/ — notes for each contact
-page.tsx — landing page
-layout.tsx — main page layout
-
-components/ — reusable UI parts
-lib/ — Prisma client, helpers
-
----
-
-## Application functionality
-
-This app works like a small CRM:
-
-- You create an account or log in  
-- You can add contacts  
-- Each contact can have multiple notes  
-- Notes include a timestamp  
-- You only see your own contacts and notes  
-
-### Landing page
+When you first open the application, you’ll see the landing page:
 
 ![](doc/landing.png)
 
-### Sign In page
+This page gives a brief introduction and links to sign in or sign up.
 
-![](doc/signin.png)
+---
 
-### Sign Up page
+## Register
+
+If you don’t have an account, click **Sign Up**:
 
 ![](doc/signup.png)
 
-### Contacts list
+Enter your information to create a new user.
+
+---
+
+## Sign In
+
+If you already have an account, click **Sign In**:
+
+![](doc/signin.png)
+
+Once logged in, the navbar will update to show options for listing contacts and adding new ones.
+
+---
+
+## User Home Page
+
+After logging in, you return to a landing-style page, but the navbar now includes authenticated options:
+
+- List Contacts
+- Add Contact
+- Sign Out
+
+This lets you start managing your contacts.
+
+---
+
+## List Contacts
+
+Clicking **List Contacts** shows all of the contacts belonging to the logged-in user:
 
 ![](doc/listcontacts.png)
 
-You can view all your contacts here and edit them. 
-This page also lets you write notes for each contact.
+From here, you can:
 
-### Add Contact page
+- View your saved contacts  
+- Edit a contact  
+- Write notes about the contact  
+
+---
+
+## Add Contact
+
+You can add a new contact with the **Add Contact** form:
 
 ![](doc/addcontact.png)
 
-You can add contacts, including fields like name, address, image, and description.
+Enter the person’s details and save them.
 
 ---
 
-## Database tables (simple explanation)
+## Notes
 
-The app uses three tables:
-
-### User
-- email  
-- password  
-- role  
-
-### Contact
-- first name  
-- last name  
-- address  
-- image  
-- description  
-- owner (points to the user)
-
-### Note
-- content  
-- timestamp  
-- which contact it belongs to  
-- owner  
+Each contact has a page where you can write timestamped notes about interactions with them.  
+This is useful for recording conversations, reminders, meetings, or anything important you want to remember later.
 
 ---
 
-## CSS
+## Admin Mode (If enabled)
 
-The UI mainly uses **React Bootstrap**, and any extra styles go into:
+If a user is assigned the **Admin** role in the settings file, an extra link appears in the navbar.  
+Admins can view **all contacts** from **all users** in the system.
 
-src/app/globals.css
-
----
-
-## Routing
-
-Next.js App Router creates pages automatically based on folders inside `src/app/`.
+Regular users cannot access this page.
 
 ---
 
-## Authentication
+## Summary
 
-NextAuth handles logging in, logging out, and registering new users.
+Digits provides a simple but complete example of a full-stack web application where users can:
 
----
+- Register and log in  
+- Manage contacts  
+- Record timestamped notes  
+- (If admin) View all users’ contacts  
 
-## Authorization
-
-Only logged-in users can view contacts and notes. Users cannot see data that isn’t theirs.
-
----
-
-## Configuration
-
-Your seed data lives in:
-
-config/settings.development.json
-
----
-
-## Quality Assurance
-
-Run:
-
-npm run lint
-
-to check code style and fix problems before submitting.
-
+This app demonstrates how authentication, databases, forms, routing, and UI all work together in a modern web framework.
